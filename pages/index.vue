@@ -66,30 +66,15 @@ export default {
              } 
         })
       })
-      let values = await Promise.all(datas)
-      this.searchTypes.forEach((type, i) => {
-        this[type] = values[i].count !== 0 ? values[i] : null
-      })
-      console.log(values)
-    },
-    /*search () {
-      if(this.searchStr !== '') {
-        this.searchTypes.forEach(async (type) => {
-          this[type] = null
-          try {
-            let result = await this.getData({
-            url: type,
-            data: {
-              search: this.searchStr
-             } 
-            })
-            this[type] = result.count > 0 ? result : null
-          } catch (e) {
-            console.error(e)
-          }
+      try {
+        let values = await Promise.all(datas)
+        this.searchTypes.forEach((type, i) => {
+          this[type] = values[i].count !== 0 ? values[i] : null
         })
+      } catch (e) {
+        console.error(e)
       }
-    },*/
+    },
     getActors: async function(val) {
       try {
         this.preloaders[this.searchTypes[1]] = true
