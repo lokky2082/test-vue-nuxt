@@ -57,7 +57,22 @@ export default {
   },
   methods: {
     ...mapActions(['getData']),
-    search () {
+    search: async function (params) {
+      let datas = this.searchTypes.map(type => {
+        return this.getData({
+            url: type,
+            data: {
+              search: this.searchStr
+             } 
+        })
+      })
+      let values = await Promise.all(datas)
+      this.searchTypes.forEach((type, i) => {
+        this[type] = values[i].count !== 0 ? values[i] : null
+      })
+      console.log(values)
+    },
+    /*search () {
       if(this.searchStr !== '') {
         this.searchTypes.forEach(async (type) => {
           this[type] = null
@@ -74,7 +89,7 @@ export default {
           }
         })
       }
-    },
+    },*/
     getActors: async function(val) {
       try {
         this.preloaders[this.searchTypes[1]] = true
